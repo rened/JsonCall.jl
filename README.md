@@ -36,5 +36,3 @@ serve(f)
 
 jsoncall(d) == Dict("result" => 2*x)    # true
 ```
-
-
