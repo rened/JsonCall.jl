@@ -18,4 +18,23 @@ println(JsonCall.makejson([1 2 3;4 5 6]))
 {"arraydata":[1,4,2,5,3,6],"arraysize":[2,3]}
 ```
 
+## Passing HDF5 files
+
+In case your data is too large or does not fit into the aforementioned array serialization, you can pass data as HDF5 files instead. This can be done for either the data, the result, or both. You can pass a existing HDF5 filename (always ending in `.hdf5`), or use the convenience function `savehdf5(d::Dict)`:
+
+```jl
+using JsonCall
+
+filenameIN = tempname()*".hdf5"
+filenameOUT = tempname()*".hdf5"
+
+x = ones(Float32, 2, 3)
+d = Dict("data" => savehdf5(filename, x))
+
+f(a) = Dict("result" => savehdf5(tempname(), a["data"]*2))
+serve(f)
+
+jsoncall(d) == Dict("result" => 2*x)    # true
+```
+
 
